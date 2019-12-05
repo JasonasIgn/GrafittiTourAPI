@@ -57,7 +57,7 @@ class GraffitiController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ request: { graffiti }, response, auth }) {
+  async update({ request: { graffiti }, auth }) {
     const user = auth.user;
 
     AuthorizationService.verifyPermission(graffiti, user);

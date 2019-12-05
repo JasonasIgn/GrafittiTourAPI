@@ -41,10 +41,10 @@ class UserController {
    */
   async store({ request, response }) {
     const userData = request.only(["username", "password", "email"]);
-    const roleId = await AuthorizationService.getRoleId(rolesObj.USER);
+    const userRole = await AuthorizationService.getRoleId(rolesObj.USER);
     const user = await User.create(userData);
 
-    await user.roles().attach([roleId]);
+    await user.roles().attach([userRole]);
     response.status(201).send();
   }
 
