@@ -46,12 +46,8 @@ class GraffitiController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {
-    const { id } = params;
-    const graffiti = await Graffiti.find(id);
-    if (!graffiti) throw new NotFoundException("Graffiti not found");
+  async show({ params, request: { graffiti }, response }) {
     return graffiti;
   }
 
@@ -69,7 +65,7 @@ class GraffitiController {
 
     const graffiti = await Graffiti.find(graffitiId);
 
-    AuthorizationService.verifyPermission(graffiti, user, "graffiti");
+    AuthorizationService.verifyPermission(graffiti, user);
 
     const graffitiData = request.only(["name", "longtitude", "latitude"]);
     await user
@@ -92,7 +88,7 @@ class GraffitiController {
 
     const graffiti = await Graffiti.find(graffitiId);
 
-    AuthorizationService.verifyPermission(graffiti, user, "graffiti");
+    AuthorizationService.verifyPermission(graffiti, user);
 
     await graffiti.delete();
 
