@@ -37,7 +37,10 @@ Route.put("users", "UserController.updateMyProfile")
   .validator("UpdateMyProfile");
 
 Route.resource("graffittis", "GraffitiController").middleware(
-  new Map([[["store", "destroy"], ["auth"]]])
+  new Map([
+    [["store", "destroy"], ["auth"]],
+    [["show"], ["findGraffiti"]]
+  ])
 );
 
 Route.get("graffittis/:id/ratings", "GraffitiController.getRatings");

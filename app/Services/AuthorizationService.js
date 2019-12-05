@@ -3,11 +3,7 @@ const ForbiddenException = use("App/Exceptions/ForbiddenException");
 const NotFoundException = use("App/Exceptions/NotFoundException");
 
 class AuthorizationService {
-  verifyPermission(resource, user, resourceName) {
-    if (!resource) {
-      throw new NotFoundException(`${resourceName} not found`);
-    }
-
+  verifyPermission(resource, user) {
     if (resource.user_id !== user.id) {
       throw new ForbiddenException();
     }

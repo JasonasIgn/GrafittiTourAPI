@@ -91,7 +91,7 @@ class RatingController {
 
     const rating = await Rating.find(ratingId);
 
-    AuthorizationService.verifyPermission(rating, user, "rating");
+    AuthorizationService.verifyPermission(rating, user);
 
     const ratingData = request.only(["rating", "comment"]);
 
@@ -113,7 +113,7 @@ class RatingController {
     const user = auth.user;
     const { id: ratingId } = params;
     const rating = await Rating.find(ratingId);
-    AuthorizationService.verifyPermission(rating, user, "rating");
+    AuthorizationService.verifyPermission(rating, user);
     await rating.delete();
     response.status(200).send();
   }
