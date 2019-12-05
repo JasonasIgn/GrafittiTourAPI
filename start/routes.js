@@ -39,11 +39,14 @@ Route.put("users", "UserController.updateMyProfile")
 Route.resource("graffittis", "GraffitiController").middleware(
   new Map([
     [["store", "destroy"], ["auth"]],
-    [["show"], ["findGraffiti"]]
+    [["show", "update", "destroy"], ["findGraffiti"]]
   ])
 );
 
-Route.get("graffittis/:id/ratings", "GraffitiController.getRatings");
+Route.get(
+  "graffittis/:id/ratings",
+  "GraffitiController.getRatings"
+).middleware(["findGraffiti"]);
 
 Route.resource("ratings", "RatingController").middleware(
   new Map([[["store", "destroy", "update"], ["auth"]]])
