@@ -24,9 +24,16 @@ Route.get("/", () => {
 
 Route.resource("users", "UserController")
   .validator(new Map([[["users.store"], ["StoreUser"]]]))
-  .middleware(new Map([[["index"], ["auth"]]]));
+  .middleware(
+    new Map([
+      [["index"], ["auth"]],
+      [["show, destroy"], ["findUser"]]
+    ])
+  );
 
-Route.get("users/:id/graffittis", "UserController.getGraffittis");
+Route.get("users/:id/graffittis", "UserController.getGraffittis").middleware([
+  "findUser"
+]);
 
 Route.get("user/ratings", "UserController.getMyRatings").middleware(["auth"]);
 

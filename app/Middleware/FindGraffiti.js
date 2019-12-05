@@ -19,7 +19,7 @@ class FindGraffiti {
     {
       throw new NotFoundException("Graffiti not found")
     }
-    request.body.graffiti = graffiti;
+    request.graffiti = graffiti;
     await next()
   }
 }

@@ -19,7 +19,7 @@ class FindUser {
     {
       throw new NotFoundException("User not found")
     }
-    request.body.user = user;
+    request.user = user;
     await next()
   }
 }

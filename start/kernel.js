@@ -38,7 +38,8 @@ const globalMiddleware = [
 const namedMiddleware = {
   auth: "Adonis/Middleware/Auth",
   guest: "Adonis/Middleware/AllowGuestOnly",
-  findGraffiti: "App/Middleware/FindGraffiti"
+  findGraffiti: "App/Middleware/FindGraffiti",
+  findUser: "App/Middleware/FindUser"
 };
 
 /*
