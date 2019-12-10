@@ -57,16 +57,15 @@ class GraffitiController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ request: { graffiti }, auth }) {
+  async update({ request, auth }) {
     const user = auth.user;
+    const { graffiti } = request;
 
     AuthorizationService.verifyPermission(graffiti, user);
 
     const graffitiData = request.only(["name", "longtitude", "latitude"]);
-    await user
-      .graffittis()
-      .where("id", graffitiId)
-      .update(graffitiData);
+    graffiti.merge(graffitiData);
+    await graffiti.save();
   }
 
   /**

@@ -56,7 +56,11 @@ Route.get(
 ).middleware(["findGraffiti"]);
 
 Route.resource("ratings", "RatingController").middleware(
-  new Map([[["store", "destroy", "update"], ["auth"]]])
+  new Map([
+    [["store", "destroy", "update"], ["auth"]],
+    [["show", "update", "destroy"], ["findRating"]],
+    [["store"], ["findGraffiti"]]
+  ])
 );
 
 Route.post("login", "AuthController.login").middleware(["guest"]);

@@ -20,22 +20,10 @@ class RatingController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async index({ request, response, view }) {
+  async index() {
     return await Rating.all();
   }
-
-  /**
-   * Render a form to be used for creating a new rating.
-   * GET ratings/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create({ request, response, view }) {}
 
   /**
    * Create/save a new rating.
@@ -47,15 +35,10 @@ class RatingController {
    */
   async store({ request, response, auth }) {
     const user = auth.user;
-    const { graffiti_id, ...rest } = request.only([
-      "rating",
-      "comment",
-      "graffiti_id"
-    ]);
-    const graffiti = await Graffiti.find(graffiti_id);
-    if (!graffiti) throw new NotFoundException("Graffiti doesn't exist");
+    const ratingData = request.only(["rating", "comment"]);
+    const { graffiti } = request;
 
-    const rating = await user.ratings().create(rest);
+    const rating = await user.ratings().create(ratingData);
 
     await rating.graffiti().associate(graffiti);
     response.status(201).send();
@@ -70,10 +53,7 @@ class RatingController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {
-    const { id } = params;
-    const rating = await Rating.find(id);
-    if (!rating) throw new NotFoundException("Rating not found");
+  async show({ request: { rating } }) {
     return rating;
   }
 
@@ -85,20 +65,16 @@ class RatingController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response, auth }) {
+  async update({ request, auth }) {
     const user = auth.user;
-    const { id: ratingId } = params;
-
-    const rating = await Rating.find(ratingId);
+    const { rating } = request;
 
     AuthorizationService.verifyPermission(rating, user);
 
     const ratingData = request.only(["rating", "comment"]);
+    rating.merge(ratingData);
 
-    await user
-      .ratings()
-      .where("id", ratingId)
-      .update(ratingData);
+    await rating.save();
   }
 
   /**
@@ -109,10 +85,8 @@ class RatingController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params, request, response, auth }) {
+  async destroy({ request: { rating }, response, auth }) {
     const user = auth.user;
-    const { id: ratingId } = params;
-    const rating = await Rating.find(ratingId);
     AuthorizationService.verifyPermission(rating, user);
     await rating.delete();
     response.status(200).send();

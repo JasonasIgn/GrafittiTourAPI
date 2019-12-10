@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 const Graffiti = use("App/Models/Graffiti");
 const NotFoundException = use("App/Exceptions/NotFoundException");
@@ -13,15 +13,19 @@ class FindGraffiti {
    * @param {Request} ctx.request
    * @param {Function} next
    */
-  async handle ({ request, params: { id } }, next) {
-    const graffiti = await Graffiti.find(id)
-    if (!graffiti) 
-    {
-      throw new NotFoundException("Graffiti not found")
+  async handle({ request, params: { id } }, next) {
+    let graffitiId = id;
+    if (!graffitiId) {
+      const { graffiti_id } = request.only(["graffiti_id"]);
+      graffitiId = graffiti_id;
+    }
+    const graffiti = await Graffiti.find(graffitiId);
+    if (!graffiti) {
+      throw new NotFoundException("Graffiti not found");
     }
     request.graffiti = graffiti;
-    await next()
+    await next();
   }
 }
 
-module.exports = FindGraffiti
+module.exports = FindGraffiti;
