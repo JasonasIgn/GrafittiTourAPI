@@ -1,9 +1,7 @@
 "use strict";
 
 const Rating = use("App/Models/Rating");
-const Graffiti = use("App/Models/Graffiti");
 const AuthorizationService = use("App/Services/AuthorizationService");
-const NotFoundException = use("App/Exceptions/NotFoundException");
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */

@@ -26,8 +26,8 @@ Route.resource("users", "UserController")
   .validator(new Map([[["users.store"], ["StoreUser"]]]))
   .middleware(
     new Map([
-      [["index"], ["auth"]],
-      [["show, destroy"], ["findUser"]]
+      [["index", "show"], ["auth", "adminAccess"]],
+      [["show", "destroy"], ["findUser"]]
     ])
   );
 

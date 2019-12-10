@@ -16,15 +16,8 @@ class UserController {
   /**
    * Show a list of all users.
    * GET users
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async index({ request, response, view, auth }) {
-    const user = auth.user;
-    const a = await AuthorizationService.verifyRole(user, rolesObj.ADMIN);
+  async index() {
     return await User.query()
       .with("roles")
       .fetch();
