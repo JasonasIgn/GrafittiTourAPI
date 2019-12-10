@@ -65,4 +65,6 @@ Route.resource("ratings", "RatingController").middleware(
 
 Route.post("login", "AuthController.login").middleware(["guest"]);
 
+Route.post("logout", "AuthController.logout").middleware(["auth"]);
+
 Route.post("refresh", "AuthController.refresh");
