@@ -34,7 +34,7 @@ class AuthController {
    */
   async logout({ response, auth }) {
     await auth.revokeTokens()
-    response.status(200).send();
+    response.status(200).send({});
   }
 
 }

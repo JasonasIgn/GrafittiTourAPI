@@ -37,7 +37,7 @@ class UserController {
     const user = await User.create(userData);
 
     await user.roles().attach([userRole]);
-    response.status(201).send();
+    response.status(201).send({});
   }
 
   /**
