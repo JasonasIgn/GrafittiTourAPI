@@ -34,7 +34,7 @@ class GraffitiController {
     const user = auth.user;
     const graffitiData = request.only(["name", "longtitude", "latitude"]);
     await user.graffittis().create(graffitiData);
-    response.status(201).send();
+    response.status(201).send({});
   }
 
   /**
