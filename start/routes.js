@@ -37,6 +37,8 @@ Route.get("users/:id/graffittis", "UserController.getGraffittis").middleware([
 
 Route.get("user/ratings", "UserController.getMyRatings").middleware(["auth"]);
 
+Route.get("user/graffities", "UserController.getMyGraffities").middleware(["auth"]);
+
 Route.get("user", "UserController.getMyProfile").middleware(["auth"]);
 
 Route.put("users", "UserController.updateMyProfile")

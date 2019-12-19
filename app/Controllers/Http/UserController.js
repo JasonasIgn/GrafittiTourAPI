@@ -104,6 +104,19 @@ class UserController {
     return user.ratings().fetch();
   }
 
+    /**
+   * Gets user ratings
+   * GET user/ratings
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   */
+  async getMyGraffities({ auth }) {
+    const user = auth.user;
+    return user.graffittis().fetch();
+  }
+
   /**
    * Gets user ratings
    * GET user/ratings
