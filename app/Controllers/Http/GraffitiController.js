@@ -32,7 +32,12 @@ class GraffitiController {
    */
   async store({ request, response, auth }) {
     const user = auth.user;
-    const graffitiData = request.only(["name", "longtitude", "latitude"]);
+    const graffitiData = request.only([
+      "name",
+      "longtitude",
+      "latitude",
+      "description"
+    ]);
     await user.graffittis().create(graffitiData);
     response.status(201).send({});
   }
@@ -63,7 +68,12 @@ class GraffitiController {
 
     AuthorizationService.verifyPermission(graffiti, user);
 
-    const graffitiData = request.only(["name", "longtitude", "latitude"]);
+    const graffitiData = request.only([
+      "name",
+      "longtitude",
+      "latitude",
+      "description"
+    ]);
     graffiti.merge(graffitiData);
     await graffiti.save();
   }
