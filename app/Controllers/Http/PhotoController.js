@@ -1,7 +1,7 @@
 "use strict";
 
 const Photo = use("App/Models/Photo");
-const Helpers = use('Helpers')
+const Helpers = use("Helpers");
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -16,23 +16,21 @@ class PhotoController {
    * @param {Response} ctx.response
    */
   async store({ request, response }) {
-    const profilePic = request.file("photo", {
+    const profilePics = request.file("photo", {
       types: ["image"],
       size: "2mb"
     });
-
-    const photo = await Photo.create({});
-
-    await profilePic.move(Helpers.tmpPath("uploads"), {
-      name: `${photo.id}.jpg`,
-      overwrite: true
+    const photos = await Photo.createMany(profilePics._files.map(() => ({})));
+    await profilePics.moveAll(Helpers.tmpPath("uploads"), (file, index) => {
+      return {
+        name: `${photos[index].id}.jpg`
+      };
     });
 
-    if (!profilePic.moved()) {
-      return profilePic.error();
+    if (!profilePics.movedAll()) {
+      return profilePics.errors();
     }
-
-    response.status(200).send({ id: photo.id });
+    response.status(200).send(photos.map(photo => ({ id: photo.id })));
   }
 }
 
