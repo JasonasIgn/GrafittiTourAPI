@@ -46,7 +46,7 @@ Route.get("user/graffities", "UserController.getMyGraffities").middleware([
 
 Route.get("user", "UserController.getMyProfile").middleware(["auth"]);
 
-Route.get("photo", "PhotoController.store");
+Route.post("photo", "PhotoController.store");
 
 Route.put("users", "UserController.updateMyProfile")
   .middleware(["auth"])
