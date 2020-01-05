@@ -13,8 +13,8 @@ class GraffitiSchema extends Schema {
         .unsigned()
         .references("id")
         .inTable("users");
-      table.float("latitude").notNullable();
-      table.float("longtitude").notNullable();
+      table.float("lat").notNullable();
+      table.float("lng").notNullable();
       table.string("description", 511).notNullable();
       table
         .boolean("confirmed")

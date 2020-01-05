@@ -26,7 +26,10 @@ Route.resource("users", "UserController")
   .validator(new Map([[["users.store"], ["StoreUser"]]]))
   .middleware(
     new Map([
-      [["index", "show"], ["auth", "adminAccess"]],
+      [
+        ["index", "show"],
+        ["auth", "adminAccess"]
+      ],
       [["show", "destroy"], ["findUser"]]
     ])
   );
@@ -37,9 +40,13 @@ Route.get("users/:id/graffittis", "UserController.getGraffittis").middleware([
 
 Route.get("user/ratings", "UserController.getMyRatings").middleware(["auth"]);
 
-Route.get("user/graffities", "UserController.getMyGraffities").middleware(["auth"]);
+Route.get("user/graffities", "UserController.getMyGraffities").middleware([
+  "auth"
+]);
 
 Route.get("user", "UserController.getMyProfile").middleware(["auth"]);
+
+Route.get("photo", "PhotoController.store");
 
 Route.put("users", "UserController.updateMyProfile")
   .middleware(["auth"])
