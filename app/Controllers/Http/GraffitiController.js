@@ -62,7 +62,7 @@ class GraffitiController {
     let totalRating = 0;
     let totalRated = 0;
     let latestRatings = [];
-    const promises = ratings.rows.map(async (rating, idx) => {
+    const promises = ratings.rows.reverse().map(async (rating, idx) => {
       totalRating += rating.rating;
       totalRated += 1;
       if (idx < 5) {

@@ -39,7 +39,7 @@ class RatingController {
     const rating = await user.ratings().create(ratingData);
 
     await rating.graffiti().associate(graffiti);
-    response.status(201).send();
+    response.status(201).send({});
   }
 
   /**
