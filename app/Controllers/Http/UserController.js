@@ -126,7 +126,10 @@ class UserController {
    * @param {Response} ctx.response
    */
   async getMyProfile({ auth }) {
-    return auth.user;
+    const user = auth.user
+    const userRoles = await user.roles().fetch()
+    user.roles = userRoles
+    return user;
   }
 
   /**
