@@ -40,6 +40,7 @@ const namedMiddleware = {
   guest: "Adonis/Middleware/AllowGuestOnly",
   findGraffiti: "App/Middleware/FindGraffiti",
   findRating: "App/Middleware/FindRating",
+  findPhoto: "App/Middleware/FindPhoto",
   findUser: "App/Middleware/FindUser",
   adminAccess: "App/Middleware/AdminAccess"
 };

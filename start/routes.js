@@ -48,6 +48,8 @@ Route.get("user", "UserController.getMyProfile").middleware(["auth"]);
 
 Route.post("photo", "PhotoController.store");
 
+Route.get("photo/:id", "PhotoController.show").middleware("findPhoto");
+
 Route.put("users", "UserController.updateMyProfile")
   .middleware(["auth"])
   .validator("UpdateMyProfile");
