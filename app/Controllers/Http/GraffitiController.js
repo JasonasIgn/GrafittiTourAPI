@@ -61,14 +61,17 @@ class GraffitiController {
     const ratings = await graffiti.ratings().fetch();
     let totalRating = 0;
     let totalRated = 0;
-    let latestRatings = []
-    ratings.rows.forEach((rating, idx) => {
+    let latestRatings = [];
+    const promises = ratings.rows.map(async (rating, idx) => {
       totalRating += rating.rating;
       totalRated += 1;
-      if (idx < 5) latestRatings.push(rating)
+      if (idx < 5) {
+        const ratingOwner = await rating.user().first();
+        rating.username = ratingOwner.username;
+        latestRatings.push(rating);
+      }
     });
-
-    
+    await Promise.all(promises);
 
     const resultGraffiti = await Graffiti.query()
       .with("photos")
