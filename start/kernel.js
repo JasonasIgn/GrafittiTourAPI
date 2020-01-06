@@ -41,6 +41,7 @@ const namedMiddleware = {
   findGraffiti: "App/Middleware/FindGraffiti",
   findRating: "App/Middleware/FindRating",
   findPhoto: "App/Middleware/FindPhoto",
+  findUploads: "App/Middleware/FindUploads",
   findUser: "App/Middleware/FindUser",
   adminAccess: "App/Middleware/AdminAccess"
 };

@@ -1,5 +1,6 @@
 "use strict";
 const Graffiti = use("App/Models/Graffiti");
+const Photo = use("App/Models/Photo");
 const AuthorizationService = use("App/Services/AuthorizationService");
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -32,8 +33,12 @@ class GraffitiController {
    */
   async store({ request, response, auth }) {
     const user = auth.user;
-    const graffitiData = request.only(["name", "lng", "lat", "description"]);
-    await user.graffittis().create(graffitiData);
+    const uploadsList = request.uploadsList
+    const {uploads, ...graffitiData} = request.only(["name", "lng", "lat", "description", "uploads"]);
+    const graffiti = await user.graffittis().create(graffitiData);
+    uploadsList.map(async upload => {
+      upload.graffiti().associate(graffiti);
+    })
     response.status(201).send({});
   }
 

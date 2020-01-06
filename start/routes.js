@@ -56,7 +56,7 @@ Route.put("users", "UserController.updateMyProfile")
 
 Route.resource("graffittis", "GraffitiController").middleware(
   new Map([
-    [["store", "destroy"], ["auth"]],
+    [["store", "destroy"], ["auth", "findUploads"]],
     [["show", "update", "destroy"], ["findGraffiti"]]
   ])
 );

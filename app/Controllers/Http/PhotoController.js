@@ -16,12 +16,10 @@ class PhotoController {
    * @param {Response} ctx.response
    */
   async store({ request, response }) {
-    // console.log(request)
     const profilePics = request.file("files", {
       types: ["image"],
       size: "2mb"
     });
-    console.log(profilePics);
     const photos = await Photo.createMany(profilePics._files.map(() => ({})));
     await profilePics.moveAll(Helpers.tmpPath("uploads"), (file, index) => {
       return {
