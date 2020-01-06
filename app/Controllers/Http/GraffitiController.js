@@ -1,6 +1,6 @@
 "use strict";
 const Graffiti = use("App/Models/Graffiti");
-const Photo = use("App/Models/Photo");
+const Rating = use("App/Models/Rating");
 const AuthorizationService = use("App/Services/AuthorizationService");
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -33,12 +33,19 @@ class GraffitiController {
    */
   async store({ request, response, auth }) {
     const user = auth.user;
-    const uploadsList = request.uploadsList
-    const {uploads, ...graffitiData} = request.only(["name", "lng", "lat", "description", "uploads"]);
+    const uploadsList = request.uploadsList;
+    const { uploads, ...graffitiData } = request.only([
+      "name",
+      "lng",
+      "lat",
+      "description",
+      "thumbnail",
+      "uploads"
+    ]);
     const graffiti = await user.graffittis().create(graffitiData);
     uploadsList.map(async upload => {
       upload.graffiti().associate(graffiti);
-    })
+    });
     response.status(201).send({});
   }
 
@@ -51,7 +58,26 @@ class GraffitiController {
    * @param {Response} ctx.response
    */
   async show({ request: { graffiti } }) {
-    return graffiti;
+    const ratings = await graffiti.ratings().fetch();
+    let totalRating = 0;
+    let totalRated = 0;
+    let latestRatings = []
+    ratings.rows.forEach((rating, idx) => {
+      totalRating += rating.rating;
+      totalRated += 1;
+      if (idx < 5) latestRatings.push(rating)
+    });
+
+    
+
+    const resultGraffiti = await Graffiti.query()
+      .with("photos")
+      .where("id", graffiti.id)
+      .first();
+    resultGraffiti.totalRating = totalRating;
+    resultGraffiti.totalRated = totalRated;
+    resultGraffiti.latestRatings = latestRatings;
+    return resultGraffiti;
   }
 
   /**
@@ -68,7 +94,13 @@ class GraffitiController {
 
     AuthorizationService.verifyPermission(graffiti, user);
 
-    const graffitiData = request.only(["name", "lng", "lat", "description"]);
+    const graffitiData = request.only([
+      "name",
+      "lng",
+      "lat",
+      "description",
+      "thumbnail"
+    ]);
     graffiti.merge(graffitiData);
     await graffiti.save();
   }

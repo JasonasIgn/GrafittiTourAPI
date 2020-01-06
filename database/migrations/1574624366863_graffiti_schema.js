@@ -15,6 +15,9 @@ class GraffitiSchema extends Schema {
         .inTable("users");
       table.float("lat").notNullable();
       table.float("lng").notNullable();
+      table.float("totalRating").notNullable();
+      table.float("totalRated").notNullable();
+      table.float("thumbnail").notNullable();
       table.string("description", 511).notNullable();
       table
         .boolean("confirmed")

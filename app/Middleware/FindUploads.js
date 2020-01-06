@@ -13,7 +13,7 @@ class FindUploads {
    * @param {Function} next
    */
   async handle({ request }, next) {
-    const { uploads } = request.only(["uploads"]);
+    const { uploads } = request.only(["uploads", "thumbnail"]);
     const uploadsArray = [];
     const promises = uploads.map(async upload => {
       const photo = await Photo.find(upload);
