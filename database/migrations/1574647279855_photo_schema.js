@@ -7,7 +7,6 @@ class PhotoSchema extends Schema {
   up() {
     this.create("photos", table => {
       table.increments();
-      table.string("name", 80).notNullable();
       table.integer('graffiti_id').unsigned().references('id').inTable('graffiti')
       table.timestamps();
     });

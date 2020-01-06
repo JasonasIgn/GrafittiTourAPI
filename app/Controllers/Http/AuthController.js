@@ -7,10 +7,8 @@ class AuthController {
    *
    * @param {object} ctx
    * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async login({ request, response, view, auth }) {
+  async login({ request, auth }) {
     const { email, password } = request.only(["email", "password"]);
     return await auth.withRefreshToken().attempt(email, password);
   }
@@ -21,12 +19,22 @@ class AuthController {
    *
    * @param {object} ctx
    * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async refresh({ request, response, view, auth }) {
+  async refresh({ request, auth }) {
     const { refreshToken } = request.only(["refreshToken"]);
     return await auth.generateForRefreshToken(refreshToken)
+  }
+
+  /**
+   * Refresh token
+   * POST refresh
+   *
+   * @param {object} ctx
+   * @param {Response} ctx.response
+   */
+  async logout({ response, auth }) {
+    await auth.revokeTokens()
+    response.status(200).send({});
   }
 
 }

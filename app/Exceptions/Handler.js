@@ -31,6 +31,11 @@ class ExceptionHandler extends BaseExceptionHandler {
       return;
     }
 
+    if (error.name === "InvalidJwtToken") {
+      response.status(401).send({ error: "You must log in to take this action" });
+      return;
+    }
+
     return super.handle(...arguments);
   }
 

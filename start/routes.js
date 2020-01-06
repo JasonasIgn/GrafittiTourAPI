@@ -24,28 +24,62 @@ Route.get("/", () => {
 
 Route.resource("users", "UserController")
   .validator(new Map([[["users.store"], ["StoreUser"]]]))
-  .middleware(new Map([[["index"], ["auth"]]]));
+  .middleware(
+    new Map([
+      [
+        ["index", "show"],
+        ["auth", "adminAccess"]
+      ],
+      [["update"], ["adminAccess", "findUser"]],
+      [["show", "destroy"], ["findUser"]]
+    ])
+  );
 
-Route.get("users/:id/graffittis", "UserController.getGraffittis");
+Route.get("users/:id/graffittis", "UserController.getGraffittis").middleware([
+  "findUser"
+]);
 
 Route.get("user/ratings", "UserController.getMyRatings").middleware(["auth"]);
 
+Route.get("user/graffities", "UserController.getMyGraffities").middleware([
+  "auth"
+]);
+
 Route.get("user", "UserController.getMyProfile").middleware(["auth"]);
+
+Route.post("photo", "PhotoController.store");
+
+Route.get("photo/:id", "PhotoController.show").middleware("findPhoto");
 
 Route.put("users", "UserController.updateMyProfile")
   .middleware(["auth"])
   .validator("UpdateMyProfile");
 
 Route.resource("graffittis", "GraffitiController").middleware(
-  new Map([[["store", "destroy"], ["auth"]]])
+  new Map([
+    [
+      ["store", "destroy"],
+      ["auth", "findUploads"]
+    ],
+    [["show", "update", "destroy"], ["findGraffiti"]]
+  ])
 );
 
-Route.get("graffittis/:id/ratings", "GraffitiController.getRatings");
+Route.get(
+  "graffittis/:id/ratings",
+  "GraffitiController.getRatings"
+).middleware(["findGraffiti"]);
 
 Route.resource("ratings", "RatingController").middleware(
-  new Map([[["store", "destroy", "update"], ["auth"]]])
+  new Map([
+    [["store", "destroy", "update"], ["auth"]],
+    [["show", "update", "destroy"], ["findRating"]],
+    [["store"], ["findGraffiti"]]
+  ])
 );
 
 Route.post("login", "AuthController.login").middleware(["guest"]);
+
+Route.post("logout", "AuthController.logout").middleware(["auth"]);
 
 Route.post("refresh", "AuthController.refresh");
