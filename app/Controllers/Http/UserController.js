@@ -74,8 +74,10 @@ class UserController {
    * @param {Response} ctx.response
    */
   async update({ params, request, response }) {
-    // const userData = request.only(["username"]);
-    // await User.create(userData);
+    const { user } = request;
+    const { username } = request.only(["username"]);
+    user.username = username;
+    await user.save();
   }
 
   /**
@@ -104,7 +106,7 @@ class UserController {
     return user.ratings().fetch();
   }
 
-    /**
+  /**
    * Gets user ratings
    * GET user/ratings
    *
@@ -126,9 +128,9 @@ class UserController {
    * @param {Response} ctx.response
    */
   async getMyProfile({ auth }) {
-    const user = auth.user
-    const userRoles = await user.roles().fetch()
-    user.roles = userRoles
+    const user = auth.user;
+    const userRoles = await user.roles().fetch();
+    user.roles = userRoles;
     return user;
   }
 
