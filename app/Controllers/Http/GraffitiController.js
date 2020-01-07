@@ -42,6 +42,8 @@ class GraffitiController {
       "thumbnail",
       "uploads"
     ]);
+    graffitiData.totalRating = 0;
+    graffitiData.totalRated = 0;
     const graffiti = await user.graffittis().create(graffitiData);
     uploadsList.map(async upload => {
       upload.graffiti().associate(graffiti);
