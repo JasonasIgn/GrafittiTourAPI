@@ -41,6 +41,8 @@ Route.get("users/:id/graffittis", "UserController.getGraffittis").middleware([
 
 Route.get("user/ratings", "UserController.getMyRatings").middleware(["auth"]);
 
+Route.get("graffities/total", "GraffitiController.getTotalGraffities");
+
 Route.get("user/graffities", "UserController.getMyGraffities").middleware([
   "auth"
 ]);

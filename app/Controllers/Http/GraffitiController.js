@@ -86,6 +86,19 @@ class GraffitiController {
   }
 
   /**
+   * Display a single graffiti.
+   * GET graffiti/:id
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   */
+  async getTotalGraffities() {
+    const totalCount = await Graffiti.getCount()
+    return totalCount;
+  }
+
+  /**
    * Update graffiti details.
    * PUT or PATCH graffiti/:id
    *
